@@ -25,7 +25,9 @@ export default function BlogsPage() {
             marginBottom: "1rem",
           }}
         >
-          <h2>{blog.title}</h2>
+          <h2>
+            <Link href={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </h2>
 
           <p>
             <strong>Author:</strong> {blog.author}
