@@ -1,8 +1,20 @@
 import Link from "next/link";
 import { blogs } from "@/lib/blogs";
 
-export default function BlogsPage() {
-  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+type BlogsPageProps = {
+  searchParams: Promise<{
+    filter?: string;
+  }>;
+};
+
+export default async function BlogsPage({ searchParams }: BlogsPageProps) {
+  const { filter = "" } = await searchParams;
+
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(filter.toLowerCase()),
+  );
+
+  const sortedBlogs = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
 
   return (
     <div>
@@ -17,6 +29,22 @@ export default function BlogsPage() {
 
         <Link href="/blogs/new">Create New Blog</Link>
       </div>
+
+      <form
+        style={{
+          marginTop: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <input
+          type="text"
+          name="filter"
+          placeholder="Search blogs..."
+          defaultValue={filter}
+        />
+
+        <button type="submit">Search</button>
+      </form>
 
       {sortedBlogs.map((blog) => (
         <div
@@ -33,10 +61,6 @@ export default function BlogsPage() {
 
           <p>
             <strong>Author:</strong> {blog.author}
-          </p>
-
-          <p>
-            <strong>URL:</strong> {blog.url}
           </p>
 
           <p>
