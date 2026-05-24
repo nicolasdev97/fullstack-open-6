@@ -2,6 +2,8 @@ import Link from "next/link";
 import { blogs } from "@/lib/blogs";
 
 export default function BlogsPage() {
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+
   return (
     <div>
       <div
@@ -16,7 +18,7 @@ export default function BlogsPage() {
         <Link href="/blogs/new">Create New Blog</Link>
       </div>
 
-      {blogs.map((blog) => (
+      {sortedBlogs.map((blog) => (
         <div
           key={blog.id}
           style={{
