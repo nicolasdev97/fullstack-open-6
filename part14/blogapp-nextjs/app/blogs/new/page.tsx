@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { blogs } from "@/lib/blogs";
-import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
+import { revalidatePath } from "next/cache";
 
 async function createBlog(formData: FormData) {
   "use server";

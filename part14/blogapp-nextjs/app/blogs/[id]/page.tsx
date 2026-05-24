@@ -1,10 +1,29 @@
+import { redirect } from "next/navigation";
 import { blogs } from "@/lib/blogs";
+import { revalidatePath } from "next/cache";
 
 type BlogPageProps = {
   params: Promise<{
     id: string;
   }>;
 };
+
+async function likeBlog(formData: FormData) {
+  "use server";
+
+  const id = Number(formData.get("id"));
+
+  const blog = blogs.find((blog) => blog.id === id);
+
+  if (blog) {
+    blog.likes += 1;
+  }
+
+  revalidatePath(`/blogs/${id}`);
+  revalidatePath(`/blogs`);
+
+  redirect(`/blogs/${id}`);
+}
 
 export default async function BlogPage({ params }: BlogPageProps) {
   const { id } = await params;
@@ -30,6 +49,12 @@ export default async function BlogPage({ params }: BlogPageProps) {
       <p>
         <strong>Likes:</strong> {blog.likes}
       </p>
+
+      <form action={likeBlog}>
+        <input type="hidden" name="id" value={blog.id} />
+
+        <button type="submit">Like</button>
+      </form>
     </div>
   );
 }
