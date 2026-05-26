@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { blogs } from "@/lib/blogs";
+import { getBlogs } from "@/lib/blogs";
 
 type BlogsPageProps = {
   searchParams: Promise<{
@@ -10,9 +10,7 @@ type BlogsPageProps = {
 export default async function BlogsPage({ searchParams }: BlogsPageProps) {
   const { filter = "" } = await searchParams;
 
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.title.toLowerCase().includes(filter.toLowerCase()),
-  );
+  const filteredBlogs = await getBlogs(filter);
 
   const sortedBlogs = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
 

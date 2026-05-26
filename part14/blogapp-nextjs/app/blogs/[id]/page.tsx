@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { blogs } from "@/lib/blogs";
+import { getBlogById, likeBlog as likeBlogService } from "@/lib/blogs";
 import { revalidatePath } from "next/cache";
 
 type BlogPageProps = {
@@ -13,11 +13,7 @@ async function likeBlog(formData: FormData) {
 
   const id = Number(formData.get("id"));
 
-  const blog = blogs.find((blog) => blog.id === id);
-
-  if (blog) {
-    blog.likes += 1;
-  }
+  await likeBlogService(id);
 
   revalidatePath(`/blogs/${id}`);
   revalidatePath(`/blogs`);
@@ -28,7 +24,7 @@ async function likeBlog(formData: FormData) {
 export default async function BlogPage({ params }: BlogPageProps) {
   const { id } = await params;
 
-  const blog = blogs.find((blog) => blog.id === Number(id));
+  const blog = await getBlogById(Number(id));
 
   if (!blog) {
     return <div>Blog not found</div>;

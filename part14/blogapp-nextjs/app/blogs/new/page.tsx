@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { blogs } from "@/lib/blogs";
+import { createBlog as createBlogService } from "@/lib/blogs";
 import { revalidatePath } from "next/cache";
 
 async function createBlog(formData: FormData) {
@@ -10,14 +10,12 @@ async function createBlog(formData: FormData) {
   const url = formData.get("url") as string;
 
   const newBlog = {
-    id: blogs.length + 1,
     title,
     author,
     url,
-    likes: 0,
   };
 
-  blogs.push(newBlog);
+  await createBlogService(newBlog);
 
   revalidatePath("/blogs");
 
