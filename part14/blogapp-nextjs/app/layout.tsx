@@ -26,6 +26,7 @@ export default function RootLayout({
         >
           <Link href="/">Home</Link>
           <Link href="/blogs">Blogs</Link>
+          <Link href="/users">Users</Link>
         </nav>
 
         <main style={{ padding: "1rem" }}>{children}</main>
