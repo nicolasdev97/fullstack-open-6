@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
+import { auth } from "@/auth";
+import LogoutButton from "@/components/LogoutButton";
 
 export const metadata: Metadata = {
   title: "Blog App",
   description: "Full Stack Open Next.js App",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en">
       <body>
@@ -27,6 +30,16 @@ export default function RootLayout({
           <Link href="/">Home</Link>
           <Link href="/blogs">Blogs</Link>
           <Link href="/users">Users</Link>
+          {session?.user ? (
+            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <div>Logged in as {session.user.name}</div>
+              <div>
+                <LogoutButton />
+              </div>
+            </div>
+          ) : (
+            <Link href="/login">Login</Link>
+          )}
         </nav>
 
         <main style={{ padding: "1rem" }}>{children}</main>

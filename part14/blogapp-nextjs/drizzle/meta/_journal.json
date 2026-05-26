@@ -15,6 +15,13 @@
       "when": 1779764641735,
       "tag": "0001_cute_war_machine",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779833208175,
+      "tag": "0002_loud_molecule_man",
+      "breakpoints": true
     }
   ]
 }

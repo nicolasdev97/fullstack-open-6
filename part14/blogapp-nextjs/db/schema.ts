@@ -9,6 +9,8 @@ export const users = pgTable("users", {
   username: text("username").notNull(),
 
   name: text("name").notNull(),
+
+  passwordHash: text("password_hash").notNull().default(""),
 });
 
 // Users relations: a user can have many blogs
