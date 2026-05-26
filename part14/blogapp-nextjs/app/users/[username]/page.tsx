@@ -1,21 +1,19 @@
-import { getUserById, getBlogsByUserId } from "@/lib/users";
+import { getUserByUsername } from "@/lib/users";
 
 type UserPageProps = {
   params: Promise<{
-    id: string;
+    username: string;
   }>;
 };
 
 export default async function UserPage({ params }: UserPageProps) {
-  const { id } = await params;
+  const { username } = await params;
 
-  const user = await getUserById(Number(id));
+  const user = await getUserByUsername(username);
 
   if (!user) {
     return <div>User not found</div>;
   }
-
-  const blogs = await getBlogsByUserId(user.id);
 
   return (
     <div>
@@ -23,10 +21,10 @@ export default async function UserPage({ params }: UserPageProps) {
 
       <p>Username: {user.username}</p>
 
-      <h2>Blogs</h2>
+      <h2>Blogs added</h2>
 
       <ul>
-        {blogs.map((blog) => (
+        {user.blogs.map((blog) => (
           <li key={blog.id}>{blog.title}</li>
         ))}
       </ul>

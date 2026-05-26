@@ -18,7 +18,7 @@ export default async function UsersPage() {
           }}
         >
           <h2>
-            <Link href={`/users/${user.id}`}>{user.name}</Link>
+            <Link href={`/users/${user.username}`}>{user.name}</Link>
           </h2>
 
           <p>Username: {user.username}</p>
