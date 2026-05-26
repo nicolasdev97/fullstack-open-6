@@ -38,7 +38,10 @@ export default async function RootLayout({
               </div>
             </div>
           ) : (
-            <Link href="/login">Login</Link>
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <Link href="/login">Login</Link>
+              <Link href="/register">Register</Link>
+            </div>
           )}
         </nav>
 
