@@ -1,52 +1,40 @@
-import { redirect } from "next/navigation";
-import { createBlog as createBlogService } from "@/lib/blogs";
-import { revalidatePath } from "next/cache";
+"use client";
 
-async function createBlog(formData: FormData) {
-  "use server";
+import { useActionState } from "react";
 
-  const title = formData.get("title") as string;
-  const author = formData.get("author") as string;
-  const url = formData.get("url") as string;
+import { createBlog, FormState } from "./actions";
 
-  const newBlog = {
-    title,
-    author,
-    url,
-  };
-
-  await createBlogService(newBlog);
-
-  revalidatePath("/blogs");
-
-  redirect("/blogs");
-}
+const initialState: FormState = {
+  errors: [],
+};
 
 export default function NewBlogPage() {
+  const [state, formAction] = useActionState(createBlog, initialState);
+
   return (
     <div>
-      <h1>Create New Blog</h1>
+      <h1>New Blog</h1>
 
-      <form action={createBlog}>
+      {state.errors.length > 0 && (
+        <ul>
+          {state.errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      )}
+
+      <form action={formAction}>
         <div>
-          <label>Title</label>
-          <br />
-          <input name="title" />
+          <input name="title" placeholder="Title" />
         </div>
 
         <div>
-          <label>Author</label>
-          <br />
-          <input name="author" />
+          <input name="author" placeholder="Author" />
         </div>
 
         <div>
-          <label>URL</label>
-          <br />
-          <input name="url" />
+          <input name="url" placeholder="URL" />
         </div>
-
-        <br />
 
         <button type="submit">Create Blog</button>
       </form>
