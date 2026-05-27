@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 
 import { createBlog as createBlogService } from "@/lib/blogs";
 
+import { auth } from "@/auth";
+
 export type FormState = {
   errors: string[];
 
@@ -18,11 +20,25 @@ export async function createBlog(
   prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  const session = await auth();
+
   const title = formData.get("title") as string;
 
   const author = formData.get("author") as string;
 
   const url = formData.get("url") as string;
+
+  if (!session?.user) {
+    return {
+      errors: ["You must be logged in"],
+
+      fields: {
+        title,
+        author,
+        url,
+      },
+    };
+  }
 
   const fields = {
     title,
@@ -55,6 +71,8 @@ export async function createBlog(
     title,
     author,
     url,
+
+    userId: Number(session.user.id),
   });
 
   redirect("/blogs");

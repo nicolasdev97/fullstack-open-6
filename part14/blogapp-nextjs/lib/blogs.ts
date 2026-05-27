@@ -24,12 +24,14 @@ export async function createBlog(data: {
   title: string;
   author: string;
   url: string;
+  userId: number;
 }) {
   await db.insert(blogs).values({
     title: data.title,
     author: data.author,
     url: data.url,
     likes: 0,
+    userId: data.userId,
   });
 }
 
