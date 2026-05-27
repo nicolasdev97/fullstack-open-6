@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 import { createBlog, FormState } from "./actions";
+
+import { useNotification } from "@/components/NotificationContext";
 
 const initialState: FormState = {
   errors: [],
@@ -17,17 +19,17 @@ const initialState: FormState = {
 export default function NewBlogPage() {
   const [state, formAction] = useActionState(createBlog, initialState);
 
+  const { showNotification } = useNotification();
+
+  useEffect(() => {
+    if (state.errors.length > 0) {
+      showNotification(state.errors[0], "error");
+    }
+  }, [state.errors, showNotification]);
+
   return (
     <div>
       <h1>New Blog</h1>
-
-      {state.errors.length > 0 && (
-        <ul>
-          {state.errors.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      )}
 
       <form action={formAction}>
         <div>

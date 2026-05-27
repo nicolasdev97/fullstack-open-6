@@ -75,5 +75,5 @@ export async function createBlog(
     userId: Number(session.user.id),
   });
 
-  redirect("/blogs");
+  redirect("/blogs?success=created");
 }

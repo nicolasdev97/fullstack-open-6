@@ -1,14 +1,18 @@
 import Link from "next/link";
+
 import { getBlogs } from "@/lib/blogs";
+
+import BlogsSuccessNotification from "@/components/BlogsSuccessNotification";
 
 type BlogsPageProps = {
   searchParams: Promise<{
     filter?: string;
+    success?: string;
   }>;
 };
 
 export default async function BlogsPage({ searchParams }: BlogsPageProps) {
-  const { filter = "" } = await searchParams;
+  const { filter = "", success } = await searchParams;
 
   const filteredBlogs = await getBlogs(filter);
 
@@ -16,6 +20,8 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
 
   return (
     <div>
+      <BlogsSuccessNotification success={success} />
+
       <div
         style={{
           display: "flex",
