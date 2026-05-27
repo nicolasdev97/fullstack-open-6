@@ -1,46 +1,68 @@
-import bcrypt from "bcryptjs";
+"use client";
 
-import { db } from "@/db";
-import { users } from "@/db/schema";
+import { useActionState } from "react";
 
-import { redirect } from "next/navigation";
-
-async function registerUser(formData: FormData) {
-  "use server";
-
-  const username = formData.get("username") as string;
-
-  const name = formData.get("name") as string;
-
-  const password = formData.get("password") as string;
-
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  await db.insert(users).values({
-    username,
-    name,
-    passwordHash,
-  });
-
-  redirect("/login");
-}
+import { registerUser, FormState } from "./actions";
 
 export default function RegisterPage() {
+  const initialState: FormState = {
+    errors: [],
+
+    fields: {
+      username: "",
+      name: "",
+      password: "",
+      passwordConfirm: "",
+    },
+  };
+
+  const [state, formAction] = useActionState(registerUser, initialState);
+
   return (
     <div>
       <h1>Register</h1>
 
-      <form action={registerUser}>
+      {state.errors.length > 0 && (
+        <ul>
+          {state.errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      )}
+
+      <form action={formAction}>
         <div>
-          <input name="username" placeholder="Username" />
+          <input
+            name="username"
+            placeholder="Username"
+            defaultValue={state.fields.username}
+          />
         </div>
 
         <div>
-          <input name="name" placeholder="Name" />
+          <input
+            name="name"
+            placeholder="Name"
+            defaultValue={state.fields.name}
+          />
         </div>
 
         <div>
-          <input type="password" name="password" placeholder="Password" />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            defaultValue={state.fields.password}
+          />
+        </div>
+
+        <div>
+          <input
+            type="password"
+            name="passwordConfirm"
+            placeholder="Confirm password"
+            defaultValue={state.fields.passwordConfirm}
+          />
         </div>
 
         <button type="submit">Register</button>
