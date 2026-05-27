@@ -21,33 +21,48 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <NotificationProvider>
-          <nav
-            style={{
-              display: "flex",
-              gap: "1rem",
-              padding: "1rem",
-              background: "#eee",
-              color: "#333",
-            }}
-          >
-            <Link href="/">Home</Link>
-            <Link href="/blogs">Blogs</Link>
-            <Link href="/users">Users</Link>
-            {session?.user ? (
-              <div
-                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
-              >
-                <div>Logged in as {session.user.name}</div>
-                <div>
-                  <LogoutButton />
-                </div>
+          <nav className="bg-gray-900 text-white px-6 py-4">
+            <div className="max-w-4xl mx-auto flex justify-between items-center">
+              <div className="flex gap-6 items-center">
+                <Link
+                  href="/"
+                  className="font-bold text-xl hover:text-gray-300"
+                >
+                  Blog App
+                </Link>
+
+                <Link href="/blogs" className="hover:text-gray-300">
+                  Blogs
+                </Link>
+
+                <Link href="/users" className="hover:text-gray-300">
+                  Users
+                </Link>
               </div>
-            ) : (
-              <div style={{ display: "flex", gap: "1rem" }}>
-                <Link href="/login">Login</Link>
-                <Link href="/register">Register</Link>
+
+              <div className="flex gap-4 items-center">
+                {session?.user ? (
+                  <>
+                    <span>{session.user.username}</span>
+
+                    <LogoutButton />
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" className="hover:text-gray-300">
+                      Login
+                    </Link>
+
+                    <Link
+                      href="/register"
+                      className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
+                    >
+                      Register
+                    </Link>
+                  </>
+                )}
               </div>
-            )}
+            </div>
           </nav>
 
           <Notification />

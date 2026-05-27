@@ -19,55 +19,53 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
   const sortedBlogs = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto p-6">
       <BlogsSuccessNotification success={success} />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <div className="flex justify-between items-center mb-6">
         <h1>Blogs</h1>
 
-        <Link href="/blogs/new">Create New Blog</Link>
+        <Link
+          href="/blogs/new"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Create New Blog
+        </Link>
       </div>
 
-      <form
-        style={{
-          marginTop: "1rem",
-          marginBottom: "1rem",
-        }}
-      >
+      <form className="flex gap-2 mb-6">
         <input
           type="text"
           name="filter"
           placeholder="Search blogs..."
           defaultValue={filter}
+          className="border border-gray-300 rounded px-3 py-2 flex-1"
         />
 
-        <button type="submit">Search</button>
+        <button
+          type="submit"
+          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900"
+        >
+          Search
+        </button>
       </form>
 
       {sortedBlogs.map((blog) => (
         <div
           key={blog.id}
-          style={{
-            border: "1px solid gray",
-            padding: "1rem",
-            marginBottom: "1rem",
-          }}
+          className="border border-gray-200 rounded-lg p-5 mb-4 shadow-sm hover:shadow-md transition"
         >
-          <h2>
-            <Link href={`/blogs/${blog.id}`}>{blog.title}</Link>
+          <h2 className="text-2xl font-semibold mb-2">
+            <Link href={`/blogs/${blog.id}`} className="hover:text-blue-600">
+              {blog.title}
+            </Link>
           </h2>
 
-          <p>
+          <p className="text-gray-700">
             <strong>Author:</strong> {blog.author}
           </p>
 
-          <p>
+          <p className="text-gray-700">
             <strong>Likes:</strong> {blog.likes}
           </p>
         </div>

@@ -31,25 +31,32 @@ export default async function BlogPage({ params }: BlogPageProps) {
   }
 
   return (
-    <div>
-      <h1>{blog.title}</h1>
+    <div className="max-w-3xl mx-auto p-6">
+      <h1 className="text-4xl font-bold mb-6">{blog.title}</h1>
 
-      <p>
-        <strong>Author:</strong> {blog.author}
-      </p>
+      <div className="space-y-4 text-lg">
+        <p>
+          <strong>Author:</strong> {blog.author}
+        </p>
 
-      <p>
-        <strong>URL:</strong> {blog.url}
-      </p>
+        <p>
+          <strong>URL:</strong> {blog.url}
+        </p>
 
-      <p>
-        <strong>Likes:</strong> {blog.likes}
-      </p>
+        <p>
+          <strong>Likes:</strong> {blog.likes}
+        </p>
+      </div>
 
-      <form action={likeBlog}>
+      <form action={likeBlog} className="mt-6">
         <input type="hidden" name="id" value={blog.id} />
 
-        <button type="submit">Like</button>
+        <button
+          type="submit"
+          className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600"
+        >
+          Like
+        </button>
       </form>
     </div>
   );

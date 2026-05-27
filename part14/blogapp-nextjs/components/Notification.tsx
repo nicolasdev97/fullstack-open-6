@@ -11,7 +11,7 @@ export default function Notification() {
 
   return (
     <div
-      className={`p-4 rounded mb-4 text-white ${
+      className={`fixed top-6 left-1/2 -translate-x-1/2 px-6 py-4 rounded-lg shadow-lg text-white z-50 transition-all duration-300 ${
         type === "success" ? "bg-green-500" : "bg-red-500"
       }`}
     >

@@ -28,15 +28,16 @@ export default function NewBlogPage() {
   }, [state.errors, showNotification]);
 
   return (
-    <div>
-      <h1>New Blog</h1>
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">New Blog</h1>
 
-      <form action={formAction}>
+      <form action={formAction} className="space-y-4">
         <div>
           <input
             name="title"
             placeholder="Title"
             defaultValue={state.fields.title}
+            className="w-full border border-gray-300 rounded px-4 py-2"
           />
         </div>
 
@@ -45,14 +46,25 @@ export default function NewBlogPage() {
             name="author"
             placeholder="Author"
             defaultValue={state.fields.author}
+            className="w-full border border-gray-300 rounded px-4 py-2"
           />
         </div>
 
         <div>
-          <input name="url" placeholder="URL" defaultValue={state.fields.url} />
+          <input
+            name="url"
+            placeholder="URL"
+            defaultValue={state.fields.url}
+            className="w-full border border-gray-300 rounded px-4 py-2"
+          />
         </div>
 
-        <button type="submit">Create Blog</button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Create Blog
+        </button>
       </form>
     </div>
   );

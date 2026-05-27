@@ -1,4 +1,5 @@
 import { getUserByUsername } from "@/lib/users";
+import Link from "next/dist/client/link";
 
 type UserPageProps = {
   params: Promise<{
@@ -16,18 +17,32 @@ export default async function UserPage({ params }: UserPageProps) {
   }
 
   return (
-    <div>
-      <h1>{user.name}</h1>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-4xl font-bold mb-2">{user.name}</h1>
 
-      <p>Username: {user.username}</p>
+      <p className="text-gray-500 text-lg mb-8">Username: {user.username}</p>
 
-      <h2>Blogs added</h2>
+      <h2 className="text-2xl font-semibold mb-4">Blogs added</h2>
 
-      <ul>
+      <div className="space-y-4">
         {user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title}</li>
+          <div
+            key={blog.id}
+            className="border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition"
+          >
+            <Link
+              href={`/blogs/${blog.id}`}
+              className="text-2xl font-semibold hover:text-blue-600"
+            >
+              {blog.title}
+            </Link>
+
+            <p className="text-gray-700 mt-2">{blog.author}</p>
+
+            <p className="text-gray-500 mt-1">Likes: {blog.likes}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
