@@ -34,3 +34,9 @@ export async function updateUserToken(userId: number, token: string) {
     })
     .where(eq(users.id, userId));
 }
+
+export async function getUserByToken(token: string) {
+  return db.query.users.findFirst({
+    where: eq(users.token, token),
+  });
+}
