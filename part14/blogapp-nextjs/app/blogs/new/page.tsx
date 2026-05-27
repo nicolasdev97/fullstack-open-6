@@ -6,6 +6,12 @@ import { createBlog, FormState } from "./actions";
 
 const initialState: FormState = {
   errors: [],
+
+  fields: {
+    title: "",
+    author: "",
+    url: "",
+  },
 };
 
 export default function NewBlogPage() {
@@ -25,15 +31,23 @@ export default function NewBlogPage() {
 
       <form action={formAction}>
         <div>
-          <input name="title" placeholder="Title" />
+          <input
+            name="title"
+            placeholder="Title"
+            defaultValue={state.fields.title}
+          />
         </div>
 
         <div>
-          <input name="author" placeholder="Author" />
+          <input
+            name="author"
+            placeholder="Author"
+            defaultValue={state.fields.author}
+          />
         </div>
 
         <div>
-          <input name="url" placeholder="URL" />
+          <input name="url" placeholder="URL" defaultValue={state.fields.url} />
         </div>
 
         <button type="submit">Create Blog</button>

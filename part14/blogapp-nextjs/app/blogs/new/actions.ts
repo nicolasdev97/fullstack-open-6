@@ -6,6 +6,12 @@ import { createBlog as createBlogService } from "@/lib/blogs";
 
 export type FormState = {
   errors: string[];
+
+  fields: {
+    title: string;
+    author: string;
+    url: string;
+  };
 };
 
 export async function createBlog(
@@ -17,6 +23,12 @@ export async function createBlog(
   const author = formData.get("author") as string;
 
   const url = formData.get("url") as string;
+
+  const fields = {
+    title,
+    author,
+    url,
+  };
 
   const errors: string[] = [];
 
@@ -35,6 +47,7 @@ export async function createBlog(
   if (errors.length > 0) {
     return {
       errors,
+      fields,
     };
   }
 
