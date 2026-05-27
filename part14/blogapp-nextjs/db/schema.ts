@@ -11,6 +11,8 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
 
   passwordHash: text("password_hash").notNull().default(""),
+
+  token: text("token"),
 });
 
 // Users relations: a user can have many blogs

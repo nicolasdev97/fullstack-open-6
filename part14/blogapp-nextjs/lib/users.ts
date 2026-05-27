@@ -7,9 +7,9 @@ export async function getUsers() {
 }
 
 export async function getUserById(id: number) {
-  const result = await db.select().from(users).where(eq(users.id, id));
-
-  return result[0];
+  return db.query.users.findFirst({
+    where: eq(users.id, id),
+  });
 }
 
 export async function getBlogsByUserId(userId: number) {
@@ -24,4 +24,13 @@ export async function getUserByUsername(username: string) {
       blogs: true,
     },
   });
+}
+
+export async function updateUserToken(userId: number, token: string) {
+  await db
+    .update(users)
+    .set({
+      token,
+    })
+    .where(eq(users.id, userId));
 }

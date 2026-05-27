@@ -45,6 +45,8 @@ export default async function RootLayout({
                   <>
                     <span>{session.user.username}</span>
 
+                    <Link href="/me">Me</Link>
+
                     <LogoutButton />
                   </>
                 ) : (
