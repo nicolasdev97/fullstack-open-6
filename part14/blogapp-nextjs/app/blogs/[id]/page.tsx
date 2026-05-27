@@ -1,6 +1,24 @@
 import { redirect } from "next/navigation";
 import { getBlogById, likeBlog as likeBlogService } from "@/lib/blogs";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
+import { addToReadingList } from "@/lib/users";
+
+async function handleAddToReadingList(formData: FormData) {
+  "use server";
+
+  const session = await auth();
+
+  if (!session?.user) {
+    return;
+  }
+
+  const blogId = Number(formData.get("blogId"));
+
+  await addToReadingList(Number(session.user.id), blogId);
+
+  revalidatePath("/me");
+}
 
 type BlogPageProps = {
   params: Promise<{
@@ -22,6 +40,8 @@ async function likeBlog(formData: FormData) {
 }
 
 export default async function BlogPage({ params }: BlogPageProps) {
+  const session = await auth();
+
   const { id } = await params;
 
   const blog = await getBlogById(Number(id));
@@ -58,6 +78,19 @@ export default async function BlogPage({ params }: BlogPageProps) {
           Like
         </button>
       </form>
+
+      {session?.user && Number(session.user.id) !== blog.userId && (
+        <form action={handleAddToReadingList} className="mt-4">
+          <input type="hidden" name="blogId" value={blog.id} />
+
+          <button
+            type="submit"
+            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+          >
+            Add to reading list
+          </button>
+        </form>
+      )}
     </div>
   );
 }

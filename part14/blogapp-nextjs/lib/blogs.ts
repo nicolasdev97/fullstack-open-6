@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { blogs } from "@/db/schema";
 import { desc, eq, ilike } from "drizzle-orm";
+import { readingLists } from "@/db/schema";
 
 export async function getBlogs(filter?: string) {
   if (filter) {
@@ -26,12 +27,21 @@ export async function createBlog(data: {
   url: string;
   userId: number;
 }) {
-  await db.insert(blogs).values({
-    title: data.title,
-    author: data.author,
-    url: data.url,
-    likes: 0,
+  const insertedBlog = await db
+    .insert(blogs)
+    .values({
+      title: data.title,
+      author: data.author,
+      url: data.url,
+      likes: 0,
+      userId: data.userId,
+    })
+    .returning();
+
+  await db.insert(readingLists).values({
     userId: data.userId,
+    blogId: insertedBlog[0].id,
+    read: false,
   });
 }
 

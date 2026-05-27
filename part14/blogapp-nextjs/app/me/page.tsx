@@ -3,6 +3,7 @@ import { getUserById } from "@/lib/users";
 import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { updateUserToken } from "@/lib/users";
+import { getReadingList } from "@/lib/users";
 
 async function generateToken() {
   "use server";
@@ -34,6 +35,8 @@ export default async function MePage() {
   }
 
   const user = await getUserById(Number(session.user.id));
+
+  const readingList = await getReadingList(Number(session.user.id));
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -69,6 +72,27 @@ export default async function MePage() {
               Generate Token
             </button>
           </form>
+        </div>
+
+        <div className="mt-10">
+          <h2 className="text-2xl font-semibold mb-4">Reading List</h2>
+
+          <div className="space-y-4">
+            {readingList.map((item) => (
+              <div
+                key={item.id}
+                className="border border-gray-200 rounded-xl p-4"
+              >
+                <h3 className="text-xl font-semibold">{item.blog.title}</h3>
+
+                <p className="text-gray-600">{item.blog.author}</p>
+
+                <p className="text-sm text-gray-500 mt-2">
+                  {item.read ? "Read" : "Unread"}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

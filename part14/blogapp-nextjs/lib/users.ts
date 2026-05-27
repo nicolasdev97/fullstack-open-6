@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { users, blogs } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { readingLists } from "@/db/schema";
 
 export async function getUsers() {
   return db.select().from(users);
@@ -38,5 +39,23 @@ export async function updateUserToken(userId: number, token: string) {
 export async function getUserByToken(token: string) {
   return db.query.users.findFirst({
     where: eq(users.token, token),
+  });
+}
+
+export async function addToReadingList(userId: number, blogId: number) {
+  await db.insert(readingLists).values({
+    userId,
+    blogId,
+    read: false,
+  });
+}
+
+export async function getReadingList(userId: number) {
+  return db.query.readingLists.findMany({
+    where: eq(readingLists.userId, userId),
+
+    with: {
+      blog: true,
+    },
   });
 }
