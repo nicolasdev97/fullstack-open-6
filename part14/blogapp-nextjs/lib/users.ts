@@ -59,3 +59,12 @@ export async function getReadingList(userId: number) {
     },
   });
 }
+
+export async function markReadingAsRead(readingListId: number) {
+  await db
+    .update(readingLists)
+    .set({
+      read: true,
+    })
+    .where(eq(readingLists.id, readingListId));
+}
