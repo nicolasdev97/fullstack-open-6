@@ -14,6 +14,7 @@ export default function Notification() {
       className={`fixed top-6 left-1/2 -translate-x-1/2 px-6 py-4 rounded-lg shadow-lg text-white z-50 transition-all duration-300 ${
         type === "success" ? "bg-green-500" : "bg-red-500"
       }`}
+      data-testid={type === "error" ? "error-message" : "notification"}
     >
       {message}
     </div>

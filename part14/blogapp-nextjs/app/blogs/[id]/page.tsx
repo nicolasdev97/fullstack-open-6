@@ -51,19 +51,21 @@ export default async function BlogPage({ params }: BlogPageProps) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-6">{blog.title}</h1>
+    <div className="max-w-3xl mx-auto p-6" data-testid="blog-detail">
+      <h1 className="text-4xl font-bold mb-6" data-testid="blog-title">
+        {blog.title}
+      </h1>
 
       <div className="space-y-4 text-lg">
-        <p>
+        <p data-testid="blog-author">
           <strong>Author:</strong> {blog.author}
         </p>
 
-        <p>
+        <p data-testid="blog-url">
           <strong>URL:</strong> {blog.url}
         </p>
 
-        <p>
+        <p data-testid="blog-likes">
           <strong>Likes:</strong> {blog.likes}
         </p>
       </div>
@@ -73,6 +75,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
         <button
           type="submit"
+          data-testid="like-button"
           className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600"
         >
           Like
@@ -85,6 +88,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
           <button
             type="submit"
+            data-testid="add-to-reading-list-button"
             className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
           >
             Add to reading list

@@ -78,5 +78,5 @@ export async function registerUser(
     passwordHash,
   });
 
-  redirect("/login");
+  redirect("/login?register=success");
 }

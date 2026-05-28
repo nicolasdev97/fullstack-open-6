@@ -33,8 +33,10 @@ export default function NewBlogPage() {
 
       <form action={formAction} className="space-y-4">
         <div>
+          <label htmlFor="title">Title</label>
           <input
             name="title"
+            id="title"
             placeholder="Title"
             defaultValue={state.fields.title}
             className="w-full border border-gray-300 rounded px-4 py-2"
@@ -42,8 +44,10 @@ export default function NewBlogPage() {
         </div>
 
         <div>
+          <label htmlFor="author">Author</label>
           <input
             name="author"
+            id="author"
             placeholder="Author"
             defaultValue={state.fields.author}
             className="w-full border border-gray-300 rounded px-4 py-2"
@@ -51,8 +55,10 @@ export default function NewBlogPage() {
         </div>
 
         <div>
+          <label htmlFor="url">URL</label>
           <input
             name="url"
+            id="url"
             placeholder="URL"
             defaultValue={state.fields.url}
             className="w-full border border-gray-300 rounded px-4 py-2"
@@ -61,6 +67,7 @@ export default function NewBlogPage() {
 
         <button
           type="submit"
+          data-testid="create-blog-button"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           Create Blog

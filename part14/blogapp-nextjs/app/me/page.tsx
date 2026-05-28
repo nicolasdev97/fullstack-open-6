@@ -1,10 +1,13 @@
+export const dynamic = "force-dynamic";
+
 import { auth } from "@/auth";
 import { getUserById } from "@/lib/users";
-import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { updateUserToken } from "@/lib/users";
 import { getReadingList } from "@/lib/users";
 import { markReadingAsRead } from "@/lib/users";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
 
 async function generateToken() {
   "use server";
@@ -19,7 +22,8 @@ async function generateToken() {
 
   await updateUserToken(Number(session.user.id), token);
 
-  revalidatePath("/me");
+  revalidatePath("/me", "page");
+  redirect("/me");
 }
 
 async function handleMarkAsRead(formData: FormData) {
@@ -29,20 +33,14 @@ async function handleMarkAsRead(formData: FormData) {
 
   await markReadingAsRead(id);
 
-  revalidatePath("/me");
+  redirect("/me");
 }
 
 export default async function MePage() {
   const session = await auth();
 
   if (!session?.user) {
-    return (
-      <div className="max-w-2xl mx-auto p-6">
-        <h1 className="text-3xl font-bold">Unauthorized</h1>
-
-        <p className="mt-4">You must be logged in.</p>
-      </div>
-    );
+    redirect("/login");
   }
 
   const user = await getUserById(Number(session.user.id));
@@ -58,30 +56,38 @@ export default async function MePage() {
       <div className="border border-gray-200 rounded-xl shadow-sm p-8">
         <h1 className="text-4xl font-bold mb-6">My Profile</h1>
 
-        <div className="space-y-4">
-          <p className="text-lg">
+        <div className="space-y-4" data-testid="user-profile">
+          <p className="text-lg" data-testid="user-name">
             <strong>Name:</strong> {user?.name}
           </p>
 
-          <p className="text-lg">
+          <p className="text-lg" data-testid="user-username">
             <strong>Username:</strong> {user?.username}
           </p>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8" data-testid="api-token-section">
           <h2 className="text-2xl font-semibold mb-4">API Token</h2>
 
           {user?.token ? (
-            <div className="bg-gray-100 p-4 rounded-lg break-all font-mono">
-              <span className="text-gray-500">{user.token}</span>
+            <div
+              className="bg-gray-100 p-4 rounded-lg break-all font-mono"
+              data-testid="token-display"
+            >
+              <span className="text-gray-500" data-testid="api-token">
+                {user.token}
+              </span>
             </div>
           ) : (
-            <p className="text-gray-500">No token generated yet.</p>
+            <p className="text-gray-500" data-testid="no-token-message">
+              No token generated yet.
+            </p>
           )}
 
           <form action={generateToken} className="mt-4">
             <button
               type="submit"
+              data-testid="generate-token-button"
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
             >
               Generate Token
@@ -89,14 +95,16 @@ export default async function MePage() {
           </form>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10" data-testid="reading-list-section">
           <h2 className="text-2xl font-semibold mb-4">Reading List</h2>
 
-          <div className="mt-10">
+          <div className="mt-10" data-testid="unread-section">
             <h2 className="text-2xl font-semibold mb-4">Unread</h2>
 
             {unreadBlogs.length === 0 ? (
-              <p className="text-gray-500">No unread blogs.</p>
+              <p className="text-gray-500" data-testid="empty-reading-list">
+                No unread blogs.
+              </p>
             ) : (
               <div className="space-y-4">
                 {unreadBlogs.map((item) => (
@@ -117,6 +125,7 @@ export default async function MePage() {
 
                       <button
                         type="submit"
+                        data-testid="mark-as-read-button"
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
                       >
                         Mark as read
@@ -128,11 +137,13 @@ export default async function MePage() {
             )}
           </div>
 
-          <div className="mt-10">
+          <div className="mt-10" data-testid="mark-read-">
             <h2 className="text-2xl font-semibold mb-4">Read</h2>
 
             {readBlogs.length === 0 ? (
-              <p className="text-gray-500">No read blogs yet.</p>
+              <p className="text-gray-500" data-testid="no-unread-blogs">
+                No read blogs yet.
+              </p>
             ) : (
               <div className="space-y-4">
                 {readBlogs.map((item) => (

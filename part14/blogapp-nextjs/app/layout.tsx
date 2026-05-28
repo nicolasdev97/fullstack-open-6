@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import LogoutButton from "@/components/LogoutButton";
 import Notification from "@/components/Notification";
 import { NotificationProvider } from "@/components/NotificationContext";
+import AuthNotifications from "@/components/AuthNotifications";
 
 export const metadata: Metadata = {
   title: "Blog App",
@@ -21,6 +22,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <NotificationProvider>
+          <AuthNotifications />
           <nav className="bg-gray-900 text-white px-6 py-4">
             <div className="max-w-4xl mx-auto flex justify-between items-center">
               <div className="flex gap-6 items-center">
@@ -32,11 +34,11 @@ export default async function RootLayout({
                 </Link>
 
                 <Link href="/blogs" className="hover:text-gray-300">
-                  Blogs
+                  blogs
                 </Link>
 
                 <Link href="/users" className="hover:text-gray-300">
-                  Users
+                  users
                 </Link>
               </div>
 
@@ -45,21 +47,21 @@ export default async function RootLayout({
                   <>
                     <span>{session.user.username}</span>
 
-                    <Link href="/me">Me</Link>
+                    <Link href="/me">me</Link>
 
                     <LogoutButton />
                   </>
                 ) : (
                   <>
                     <Link href="/login" className="hover:text-gray-300">
-                      Login
+                      login
                     </Link>
 
                     <Link
                       href="/register"
                       className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
                     >
-                      Register
+                      register
                     </Link>
                   </>
                 )}

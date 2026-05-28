@@ -6,6 +6,8 @@ import { createBlog as createBlogService } from "@/lib/blogs";
 
 import { auth } from "@/auth";
 
+import { cookies } from "next/headers";
+
 export type FormState = {
   errors: string[];
 
@@ -75,5 +77,9 @@ export async function createBlog(
     userId: Number(session.user.id),
   });
 
-  redirect("/blogs?success=created");
+  const cookieStore = await cookies();
+
+  cookieStore.set("blog-created", "true");
+
+  redirect("/blogs");
 }
