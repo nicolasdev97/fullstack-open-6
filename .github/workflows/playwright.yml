@@ -36,8 +36,9 @@ jobs:
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.local
           echo "AUTH_SECRET=${{ secrets.AUTH_SECRET }}" >> .env.local
+          echo "AUTH_TRUST_HOST=true" >> .env.local
           echo "NEXTAUTH_URL=http://127.0.0.1:3000" >> .env.local
-          echo "NODE_ENV=test" >> .env.local
+          echo "ENABLE_TEST_ENDPOINTS=true" >> .env.local
 
       - name: Verify environment setup
         run: |

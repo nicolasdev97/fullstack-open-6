@@ -4,9 +4,9 @@ import { db } from "@/db";
 import { blogs, readingLists, users } from "@/db/schema";
 
 export async function DELETE() {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.ENABLE_TEST_ENDPOINTS !== "true") {
     return NextResponse.json(
-      { error: "This endpoint is not available in production" },
+      { error: "This endpoint is not available" },
       { status: 403 },
     );
   }
@@ -17,5 +17,7 @@ export async function DELETE() {
 
   await db.delete(users);
 
-  return NextResponse.json({ message: "Database reset successfully" });
+  return NextResponse.json({
+    message: "Database reset successfully",
+  });
 }

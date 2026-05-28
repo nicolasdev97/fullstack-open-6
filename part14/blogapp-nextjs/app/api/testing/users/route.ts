@@ -7,10 +7,10 @@ import { db } from "@/db";
 import { users } from "@/db/schema";
 
 export async function POST(request: Request) {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.ENABLE_TEST_ENDPOINTS !== "true") {
     return NextResponse.json(
       {
-        error: "This endpoint is not available in production",
+        error: "This endpoint is not available",
       },
       {
         status: 403,
